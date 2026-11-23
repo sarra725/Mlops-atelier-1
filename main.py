@@ -1,5 +1,10 @@
 import argparse
 from model_pipeline import (
+    load_data,
+    clean_data,
+    encode_data,
+    split_data,
+    normalize_data,
     prepare_data,
     train_model,
     evaluate_model,
@@ -34,7 +39,9 @@ def main():
         evaluate_model(model, x_test, y_test)
 
     if args.predict:
-        x_train, x_test, y_train, y_test = prepare_data()
+        # predict() normalise lui-même : on lui passe les données brutes
+        data = encode_data(clean_data(load_data()))
+        x_train, x_test, y_train, y_test = split_data(data)
         predictions = predict(x_test)
         print(predictions[:10])
 
